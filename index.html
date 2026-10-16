@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>WattCasa</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%23FFB020'/%3E%3Cpath d='M22 6 11 23h8l-2 11 12-18h-8z' fill='%230f2a3f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/wattcasa.css">
+</head>
+<body class="f-intro">
+<canvas id="c" aria-label="Casa em 3D com aparelhos que podem ser tocados"></canvas>
+<svg id="ligacao" aria-hidden="true"><path id="ligacao-p"/></svg>
+
+<!-- apresentação -->
+<section id="intro">
+  <div class="intro-bloco">
+    <h1 class="logo">Watt<span>Casa</span></h1>
+    <p class="intro-1">Você usa energia todos os dias.</p>
+    <p class="intro-2">Mas sabe o que realmente pesa na sua conta?</p>
+    <ol class="intro-passos"><li><i>1</i>Dê seu palpite</li><li><i>2</i>Mude o uso dos aparelhos</li><li><i>3</i>Abra sua conta de luz</li></ol>
+    <button id="entrar" class="btn-principal">ENTRAR NA CASA</button>
+    <div id="sabia"><small>VOCÊ SABIA?</small><p id="sabia-txt"></p></div>
+    <p id="placar-feira" hidden></p>
+    <p class="intro-aviso">Simulação com valores estimados.</p>
+  </div>
+  <div class="links-rodape"><a href="sobre.html">Sobre o projeto</a><a href="banca.html">Central da Banca</a></div>
+</section>
+
+<!-- topo -->
+<header id="topo">
+  <span class="logo-p">Watt<span>Casa</span></span>
+  <button id="recomecar" class="btn-fantasma" title="Voltar para o começo" aria-label="Recomeçar">↺<span> Recomeçar</span></button>
+  <button id="som" class="btn-fantasma" title="Ligar ou desligar os sons" aria-label="Sons ligados">🔊</button>
+  <button id="musica" class="btn-fantasma" title="Ligar ou desligar a música" aria-label="Música ligada">♫</button>
+</header>
+
+<!-- medidor -->
+<aside id="medidor" aria-live="polite">
+  <div class="med-cab"><span class="med-disco"><i></i></span>CONSUMO ESTIMADO DA CASA</div>
+  <div class="med-kwh"><b id="med-kwh">0,0</b><span>kWh/mês</span></div>
+  <div class="med-reais"><b id="med-reais">R$ 0,00</b><span>por mês</span></div>
+  <div class="med-uso" id="med-uso"></div>
+  <div class="med-rodape" id="med-tarifa"></div>
+  <div id="med-delta"></div>
+</aside>
+
+<div id="rotulos"></div>
+<div id="flutuantes"></div>
+<div id="dica-nome"></div>
+<div id="marca-palpite">Seu palpite</div>
+<button id="ver-inteira" class="btn-fantasma">⤢ Ver a casa inteira</button>
+
+<!-- etiqueta do aparelho -->
+<div id="etiqueta" role="dialog" aria-label="Detalhes do aparelho"></div>
+
+<!-- convite: uma chamada por vez -->
+<div id="convite"><div class="cv-texto"><b id="cv-titulo"></b><span id="cv-sub"></span></div><div id="cv-acao"></div></div>
+
+<!-- conta de energia: chega num envelope, o visitante abre -->
+<section id="conta">
+  <div id="envelope" role="button" tabindex="0" aria-label="Abrir a conta de energia">
+    <div class="env">
+      <div class="env-aba"></div>
+      <div class="env-janela"><b>WattCasa Energia</b><span>CONTA DE ENERGIA ELÉTRICA</span><span>Para: casa simulada no WattCasa</span></div>
+      <div class="env-selo">SIMULAÇÃO</div>
+    </div>
+    <p class="env-dica">Sua conta chegou! <b>Toque para abrir.</b></p>
+  </div>
+  <article id="fatura" tabindex="-1" aria-label="Conta de energia simulada"></article>
+</section>
+
+<!-- inatividade -->
+<section id="ocioso">
+  <div class="ocioso-cartao"><b>Ainda está aí?</b><span>A casa volta ao começo em <i id="ocioso-seg"></i> s.</span><button class="btn-principal" id="continuar">CONTINUAR</button></div>
+</section>
+
+<div id="sem-3d" hidden>Não foi possível abrir a casa 3D neste computador. Verifique se o arquivo <b>libs/three.min.js</b> está na pasta e se o navegador permite WebGL.</div>
+
+<script src="libs/three.min.js"></script>
+<script src="js/catalogo.js"></script>
+<script src="js/calculo.js"></script>
+<script src="js/estado.js"></script>
+<script src="js/cena3d.js"></script>
+<script src="js/placar.js"></script>
+<script src="js/musica.js"></script>
+<script src="js/interface.js"></script>
+</body>
+</html>

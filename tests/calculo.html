@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WattCasa — testes do cálculo</title>
+<style>
+body{margin:0;background:#0B1220;color:#F2F6FF;font-family:system-ui,"Segoe UI",Arial,sans-serif;line-height:1.45}
+main{max-width:900px;margin:0 auto;padding:32px 20px 60px}
+h1{margin:0 0 4px;font-size:1.6rem}
+#placar{font-size:1.3rem;font-weight:700;margin:12px 0 20px;padding:12px 16px;border-radius:10px;background:#121C2E}
+#placar.ok{color:#3DDC97}#placar.falha{color:#FF5A5F}
+h2{font-size:1rem;color:#9FB0CC;text-transform:uppercase;letter-spacing:.06em;margin:22px 0 6px}
+.t{padding:4px 0}.t.ok::before{content:"✔ ";color:#3DDC97}.t.falha::before{content:"✘ ";color:#FF5A5F}
+.erro{color:#FF5A5F;font-family:ui-monospace,Consolas,monospace;font-size:.85rem;margin-left:1.3rem}
+p{color:#9FB0CC}
+</style>
+</head>
+<body>
+<main>
+<h1>Testes do cálculo</h1>
+<p>Esta página não usa a casa 3D: só o catálogo e o cálculo. Se algum teste falhar, aparece em vermelho.</p>
+<div id="placar">Rodando…</div>
+<div id="lista"></div>
+</main>
+<script src="../js/catalogo.js"></script>
+<script src="../js/calculo.js"></script>
+<script src="testes.js"></script>
+<script>
+(function(){
+  var r = window.WattCasaTestes, el = document.getElementById('lista'), g = '', html = '';
+  r.resultados.forEach(function(t){
+    if (t.grupo !== g) { g = t.grupo; html += '<h2>' + g + '</h2>'; }
+    html += '<div class="t ' + (t.ok ? 'ok' : 'falha') + '">' + t.nome + '</div>' + (t.ok ? '' : '<div class="erro">' + t.erro + '</div>');
+  });
+  el.innerHTML = html;
+  var p = document.getElementById('placar');
+  p.textContent = r.ok + ' de ' + r.total + ' testes passaram' + (r.falhas ? ' — ' + r.falhas + ' falharam' : '');
+  p.className = r.falhas ? 'falha' : 'ok';
+})();
+</script>
+</body>
+</html>

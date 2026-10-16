@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WattCasa — Central da Banca</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%23FFB020'/%3E%3Cpath d='M22 6 11 23h8l-2 11 12-18h-8z' fill='%230f2a3f'/%3E%3C/svg%3E">
+<style>
+:root{
+  --fundo:#0B1220;--sup:#121C2E;--sup2:#18243a;--linha:#26385a;
+  --texto:#F2F6FF;--texto2:#9FB0CC;--texto3:#6f83a6;
+  --energia:#FFB020;--economia:#3DDC97;--vilao:#FF5A5F;--frio:#4CC9F0;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;background:var(--fundo);color:var(--texto);font-family:system-ui,"Segoe UI",Arial,sans-serif;line-height:1.5}
+main{max-width:1120px;margin:0 auto;padding:40px 24px 80px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;border-bottom:2px solid var(--linha);padding-bottom:20px;margin-bottom:8px}
+h1{margin:0;font-size:2rem;letter-spacing:-.01em}h1 span{color:var(--energia)}
+header p{margin:.3rem 0 0;color:var(--texto2);max-width:46rem}
+.versao{color:var(--texto3);font-size:.85rem;text-align:right}
+.voltar{display:flex;flex-wrap:wrap;gap:4px 20px;margin:0 0 10px!important}
+.voltar a{display:inline-flex;align-items:center;min-height:44px;color:var(--texto2);font-size:.92rem}.voltar a:hover{color:var(--energia)}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 8px}
+nav a{color:var(--texto2);text-decoration:none;border:1px solid var(--linha);border-radius:999px;padding:4px 12px;font-size:.88rem}
+nav a:hover{color:var(--energia);border-color:var(--energia)}
+section{padding:28px 0;border-bottom:1px solid var(--sup2)}
+h2{margin:0 0 12px;font-size:1.3rem}h2 small{color:var(--texto3);font-weight:500;font-size:.9rem;margin-left:8px}
+p{margin:.4rem 0}
+.formula{font:600 1.15rem ui-monospace,Consolas,monospace;background:var(--sup);border-left:4px solid var(--energia);padding:14px 18px;border-radius:8px;margin:12px 0;overflow-x:auto}
+.exemplo{color:var(--texto2);font-family:ui-monospace,Consolas,monospace;font-size:.98rem;background:var(--sup);padding:10px 16px;border-radius:8px;margin:8px 0;overflow-x:auto}
+.dois{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.caixa{background:var(--sup);border-radius:10px;padding:16px 18px}
+.caixa b{color:var(--energia)}
+.tabela{overflow-x:auto;border:1px solid var(--linha);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--sup2);vertical-align:top}
+th{background:var(--sup);color:var(--texto2);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.mono{font-family:ui-monospace,Consolas,monospace;font-size:.85rem}
+tr.total td{font-weight:700;background:var(--sup);border-bottom:0}
+.chip{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.chip.estimado{color:#1b1300;background:var(--energia)}
+.chip.hipotese{color:#2a0607;background:var(--vilao)}
+.chip.confirmado{color:#03271a;background:var(--economia)}
+.chip.vazio{color:var(--texto3);border:1px solid var(--linha)}
+.legenda{display:flex;flex-wrap:wrap;gap:18px;color:var(--texto2);font-size:.88rem;margin:10px 0 14px}
+details{background:var(--sup);border-radius:10px;margin:10px 0;border:1px solid transparent}
+details[open]{border-color:var(--linha)}
+summary{cursor:pointer;padding:12px 16px;display:flex;justify-content:space-between;gap:16px;align-items:baseline;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸";color:var(--energia);margin-right:10px}
+details[open] summary::before{content:"▾"}
+summary .nome{font-weight:700;flex:1}
+summary .val{font-variant-numeric:tabular-nums;color:var(--energia);font-weight:700;white-space:nowrap}
+.ficha{padding:0 16px 14px}
+.ficha dl{display:grid;grid-template-columns:13rem 1fr;gap:6px 16px;margin:0}
+.ficha dt{color:var(--texto2)}
+.ficha dd{margin:0}
+.ficha .nota{color:var(--texto2);font-size:.9rem}
+ul{margin:.4rem 0;padding-left:1.2rem}li{margin:.3rem 0}
+a{color:var(--frio)}
+.aviso{color:var(--texto2);font-size:.9rem}
+@media (max-width:760px){.dois{grid-template-columns:1fr}.ficha dl{grid-template-columns:1fr}.ficha dt{margin-top:6px}
+  summary{flex-wrap:wrap;row-gap:2px}} /* no celular o valor e o selo descem de linha em vez de alargar a página */
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div>
+    <p class="voltar"><a href="index.html">← Voltar para a WattCasa</a><a href="sobre.html">Sobre o projeto</a></p>
+    <h1>Watt<span>Casa</span> · Central da Banca</h1>
+    <p>Como o WattCasa calcula consumo e custo, de onde vem cada número e o que ainda é estimativa. Todos os valores desta página são gerados pelo código a partir do catálogo; nada foi digitado à mão.</p>
+  </div>
+  <div class="versao" id="versao"></div>
+</header>
+<nav>
+  <a href="#formula">Fórmula</a><a href="#w-kwh">W × kWh</a><a href="#custo">Custo</a><a href="#variavel">Funcionamento variável</a>
+  <a href="#auditoria">Auditoria dos aparelhos</a><a href="#hipoteses">Hipóteses</a><a href="#fontes">Fontes</a><a href="#placar">Placar</a><a href="#limites">Limitações</a>
+</nav>
+
+<section id="formula">
+  <h2>1. Fórmula de consumo</h2>
+  <div class="formula">kWh/mês = potência (W) × horas de uso por dia × dias no mês × fator de funcionamento ÷ 1000</div>
+  <p>Dividimos por 1000 para passar de watt-hora (Wh) para quilowatt-hora (kWh). Quando o tempo está em minutos, primeiro dividimos por 60 para ter horas.</p>
+  <p id="fator-texto"></p>
+  <p>Exemplo com o chuveiro da casa de referência:</p>
+  <div class="exemplo" id="ex-formula"></div>
+</section>
+
+<section id="w-kwh">
+  <h2>2. Diferença entre W e kWh</h2>
+  <div class="dois">
+    <div class="caixa"><b>W (watt) é potência.</b><p>É quanto de energia o aparelho usa <em>por instante</em>, enquanto está ligado. Está na etiqueta ou plaqueta do aparelho.</p></div>
+    <div class="caixa"><b>kWh (quilowatt-hora) é energia.</b><p>É a potência acumulada ao longo do tempo. É o que o medidor registra e o que vem na conta de luz. 1 kWh = 1.000 W funcionando durante 1 hora.</p></div>
+  </div>
+  <p style="margin-top:14px">Por que isso importa: um aparelho de potência alta usado pouco tempo pode consumir menos que um de potência baixa ligado o dia inteiro.</p>
+  <div class="exemplo" id="ex-wkwh"></div>
+</section>
+
+<section id="custo">
+  <h2>3. Fórmula de custo</h2>
+  <div class="formula">R$ = kWh × tarifa</div>
+  <p id="tarifa-texto"></p>
+  <div class="exemplo" id="ex-custo"></div>
+  <p class="aviso">Regra de arredondamento: o kWh aparece com 1 casa decimal e o valor em reais com 2. O custo exibido é sempre o kWh exibido × tarifa, para a conta conferir na calculadora. A economia exibida é o valor ANTES menos o DEPOIS, e a economia anual é a mensal × 12.</p>
+</section>
+
+<section id="variavel">
+  <h2>4. Aparelhos com funcionamento variável</h2>
+  <p>A fórmula simples supõe que o aparelho usa a potência da etiqueta o tempo todo em que está ligado. Avaliamos cada aparelho:</p>
+  <div class="tabela"><table><thead><tr><th>Aparelho</th><th>Como tratamos</th><th>Avaliação</th></tr></thead><tbody id="tb-variavel"></tbody></table></div>
+</section>
+
+<section id="auditoria">
+  <h2>5. Auditoria dos aparelhos <small>casa de referência</small></h2>
+  <p id="casa-texto"></p>
+  <div class="legenda">
+    <span><span class="chip confirmado">confirmado</span> lido na etiqueta de um aparelho real</span>
+    <span><span class="chip estimado">estimado</span> tabela publicada (aparelho típico, não um modelo)</span>
+    <span><span class="chip hipotese">hipótese</span> escolha nossa para a simulação</span>
+  </div>
+  <div class="tabela"><table>
+    <thead><tr><th>Aparelho</th><th>Cálculo</th><th class="num">kWh/dia</th><th class="num">kWh/mês</th><th class="num">R$/mês</th><th>Situação</th></tr></thead>
+    <tbody id="tb-resumo"></tbody>
+  </table></div>
+  <p class="aviso" id="nota-total"></p>
+  <h3 style="margin:22px 0 4px;font-size:1.05rem">Ficha de cada aparelho</h3>
+  <p class="aviso">Clique para abrir. Tensão (V) e corrente (A) só aparecem quando são conhecidas de verdade.</p>
+  <div id="fichas"></div>
+</section>
+
+<section id="hipoteses">
+  <h2>6. Hipóteses da simulação</h2>
+  <p>Tudo o que é escolha nossa, e não dado de uma fonte:</p>
+  <ul id="lista-hipoteses"></ul>
+  <h3 style="margin:18px 0 4px;font-size:1.05rem">O que precisa da etiqueta de aparelhos reais</h3>
+  <ul id="lista-confirmar"></ul>
+</section>
+
+<section id="fontes">
+  <h2>7. Fontes</h2>
+  <ul id="lista-fontes"></ul>
+  <p class="aviso">Os valores das tabelas foram lidos dos documentos acima e devem ser conferidos neles antes da apresentação.</p>
+</section>
+
+<section id="placar">
+  <h2>8. Placar da feira <small>só neste computador</small></h2>
+  <p id="placar-txt"></p>
+  <p class="aviso">Conta quantas pessoas abriram a conta hoje e soma a economia anual simulada delas. Fica guardado no navegador deste computador, muda de dia sozinho e não guarda nada sobre as pessoas.</p>
+  <button id="zerar-placar" style="margin-top:8px;background:none;border:1px solid var(--linha);color:var(--texto2);border-radius:20px;padding:6px 14px;cursor:pointer">Zerar o placar de hoje</button>
+</section>
+
+<section id="limites">
+  <h2>9. Limitações da simulação</h2>
+  <ul>
+    <li>A casa é fictícia. Os resultados não representam a casa do visitante.</li>
+    <li>As potências vêm de tabelas de aparelhos típicos, não de modelos específicos. Aparelhos reais variam bastante.</li>
+    <li>O consumo em espera (stand-by) não está incluído.</li>
+    <li>O ar-condicionado depende do clima, da temperatura escolhida e do modelo (convencional ou inverter). O fator de funcionamento é uma hipótese.</li>
+    <li>A geladeira usa um consumo mensal de referência; o real depende do modelo, da temperatura ambiente e de quantas vezes a porta é aberta.</li>
+    <li>O chuveiro está sempre na posição mais quente. Não simulamos a posição verão porque não temos um valor de fonte para ela.</li>
+    <li>Uma tarifa única: não simulamos bandeiras tarifárias, faixas de consumo nem impostos separados.</li>
+    <li>Ficam fora do catálogo aparelhos como máquina de lavar, ferro de passar, fogão elétrico e freezer.</li>
+  </ul>
+</section>
+</main>
+
+<script src="js/catalogo.js"></script>
+<script src="js/calculo.js"></script>
+<script src="js/placar.js"></script>
+<script>
+(function(){
+  var W = window.WattCasa, cat = W.catalogo, C = W.calculo;
+  var ref = C.estadoReferencia(cat), res = C.resumo(cat, ref), tarifa = cat.tarifa.reaisPorKwh;
+  var porId = C.mapa(cat);
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function chip(s){ if(!s) return '<span class="chip vazio">não se aplica</span>'; return '<span class="chip '+s+'">'+(s==='hipotese'?'hipótese':s)+'</span>'; }
+  function fonte(f){ return f ? '<a href="'+cat.fontes[f].url+'" target="_blank" rel="noopener">'+esc(cat.fontes[f].nome)+'</a>' : '—'; }
+  function det(id){ return res.itens.filter(function(d){ return d.id===id; })[0]; }
+  function reaisDeKwh(kwh){ return C.fmtReais(C.arredondar(C.paraCentesimos(kwh) * tarifa)); }
+  function piorStatus(a){
+    var s = [a.potenciaStatus, a.usoStatus, a.diasStatus, a.fatorStatus, a.consumoStatus].filter(Boolean);
+    return s.indexOf('hipotese')>=0 ? 'hipotese' : s.indexOf('estimado')>=0 ? 'estimado' : 'confirmado';
+  }
+
+  $('versao').textContent = 'Catálogo ' + cat.versao + ' · ' + cat.tarifa.nome + ': ' + C.fmtReais(C.arredondar(tarifa*100)) + '/kWh';
+
+  // 1. exemplo da fórmula
+  var chu = det('chu');
+  $('ex-formula').textContent = chu.formula;
+  // fator de funcionamento: lido do catálogo (quais aparelhos usam um fator diferente de 1, e qual)
+  var comFator = cat.aparelhos.filter(function(a){ return a.fator != null && a.fator !== 1; });
+  var semFormula = cat.aparelhos.filter(function(a){ return a.modelo === 'consumoMensal'; });
+  $('fator-texto').innerHTML = 'O <b>fator de funcionamento</b> é a parte do tempo em que o aparelho trabalha de verdade. Ele é 1 (sem redução) na maioria dos aparelhos' +
+    (comFator.length ? '; ' + (comFator.length > 1 ? 'as exceções são ' : 'a exceção é ') + comFator.map(function(a){ return esc(a.nome) + ', com fator ' + C.fmtNum(a.fator); }).join('; ') : '') + '. Veja a seção 4.' +
+    (semFormula.length ? ' ' + semFormula.map(function(a){ return esc(a.nome); }).join(', ') + ' não usa esta fórmula: usa um consumo mensal de referência.' : '');
+
+  // 2. W × kWh: comparação chuveiro × roteador, calculada
+  var rot = det('rot'), aChu = porId.chu, aRot = porId.rot;
+  $('ex-wkwh').innerHTML =
+    esc(aChu.nome)+': '+C.fmtNum(aChu.potenciaW)+' W por '+C.fmtNum(chu.minutosDia)+' min/dia → '+C.fmtKwh(chu.decimos)+' kWh/mês<br>'+
+    esc(aRot.nome)+': '+C.fmtNum(aRot.potenciaW)+' W por '+C.fmtNum(rot.minutosDia/60)+' h/dia → '+C.fmtKwh(rot.decimos)+' kWh/mês<br>'+
+    'O chuveiro tem '+C.fmtNum(aChu.potenciaW/aRot.potenciaW)+' vezes a potência do roteador, mas consome '+C.fmtDecimal(chu.kwhMes/rot.kwhMes,1)+' vezes mais energia no mês, porque fica ligado muito menos tempo.';
+
+  // 3. custo
+  $('tarifa-texto').textContent = cat.tarifa.nome + ': ' + C.fmtReais(C.arredondar(tarifa*100)) + '/kWh. ' + cat.tarifa.texto;
+  $('ex-custo').textContent = 'Casa de referência: ' + C.fmtKwh(res.totalDecimos) + ' kWh × ' + C.fmtReais(C.arredondar(tarifa*100)) + ' = ' + C.fmtReais(res.custoCentavos) + ' por mês';
+
+  // 4. funcionamento variável
+  $('tb-variavel').innerHTML = cat.aparelhos.map(function(a){
+    var como = a.modelo==='consumoMensal' ? 'Consumo mensal de referência (sem potência × tempo)'
+      : (a.fator!==1 ? 'Potência × tempo × fator de funcionamento '+C.fmtNum(a.fator) : 'Potência × tempo (fórmula simples)');
+    return '<tr><td>'+esc(a.nome)+'</td><td>'+esc(como)+'</td><td>'+esc(a.avaliacao)+(a.fatorNota?'<br><span class="aviso">'+esc(a.fatorNota)+'</span>':'')+'</td></tr>';
+  }).join('');
+
+  // 5. auditoria
+  $('casa-texto').textContent = cat.casa;
+  var linhas = cat.aparelhos.map(function(a){
+    var d = det(a.id);
+    return '<tr><td>'+esc(a.nome)+'<br><span class="aviso">'+esc(a.comodo)+'</span></td><td class="mono">'+esc(d.formula)+'</td>'+
+      '<td class="num">'+C.fmtDecimal(d.kwhDia,3)+'</td><td class="num">'+C.fmtKwh2(C.paraCentesimos(d.kwhMes))+'</td>'+
+      '<td class="num">'+reaisDeKwh(d.kwhMes)+'</td><td>'+chip(piorStatus(a))+'</td></tr>';
+  });
+  var somaDia = res.itens.reduce(function(s,d){ return s+d.kwhDia; },0);
+  linhas.push('<tr class="total"><td>Total da casa</td><td></td><td class="num">'+C.fmtDecimal(somaDia,3)+'</td><td class="num">'+C.fmtKwh2(C.paraCentesimos(res.totalExato))+'</td><td class="num">'+reaisDeKwh(res.totalExato)+'</td><td></td></tr>');
+  $('tb-resumo').innerHTML = linhas.join('');
+  $('nota-total').textContent = 'Aqui os valores têm 2 casas decimais. Na tela do visitante o total aparece com 1 casa: ' +
+    C.fmtKwh(res.totalDecimos) + ' kWh e ' + C.fmtReais(res.custoCentavos) + '. A coluna "Situação" mostra o status mais fraco entre os dados do aparelho. kWh/dia considera um dia de uso.';
+
+  $('fichas').innerHTML = cat.aparelhos.map(function(a){
+    var d = det(a.id), corr = C.corrente(a), campos = [];
+    if (a.modelo==='consumoMensal') {
+      campos.push(['Consumo mensal de referência', C.fmtNum(a.consumoMensalKwh)+' kWh/mês '+chip(a.consumoStatus)+'<br><span class="nota">'+esc(a.consumoNota)+'</span><br>Fonte: '+fonte(a.consumoFonte)]);
+      campos.push(['Potência (W)', 'Não usada '+chip(null)+'<br><span class="nota">'+esc(a.potenciaNota)+'</span>']);
+    } else {
+      campos.push(['Potência (W)', C.fmtNum(a.potenciaW)+' W '+chip(a.potenciaStatus)+(a.potenciaNota?'<br><span class="nota">'+esc(a.potenciaNota)+'</span>':'')+'<br>Fonte: '+fonte(a.potenciaFonte)]);
+    }
+    campos.push(['Tensão (V)', a.tensaoV!=null ? C.fmtNum(a.tensaoV)+' V' : 'Não informada (não inventamos)']);
+    campos.push(['Corrente (A)', corr ? C.fmtDecimal(corr.valor,1)+' A ('+esc(corr.origem)+')' : 'Não informada (não inventamos)']);
+    campos.push(['Relação entre P, V e I', esc(cat.cargas[a.carga])]);
+    if (a.uso) {
+      var t = a.uso.quantidadeTexto ?(a.uso.quantidadeTexto+' × '+a.uso.padrao+' min = '+C.fmtNum(d.minutosDia)+' min/dia') :
+        (a.uso.minutosPorUnidade===60 ? C.fmtNum(d.minutosDia/60)+' h por dia' : C.fmtNum(d.minutosDia)+' min por dia');
+      campos.push(['Tempo de uso', esc(t)+' '+chip(a.usoStatus)+(a.usoNota?'<br><span class="nota">'+esc(a.usoNota)+'</span>':'')+'<br>Fonte: '+fonte(a.usoFonte)+
+        '<br><span class="nota">O visitante pode mudar de '+C.fmtNum(a.uso.min)+' a '+C.fmtNum(a.uso.max)+' ('+esc(a.uso.unidade)+'), de '+C.fmtNum(a.uso.passo)+' em '+C.fmtNum(a.uso.passo)+'.</span>']);
+    } else {
+      campos.push(['Tempo de uso', 'Ligada o tempo todo; o compressor decide quando trabalha '+chip(null)]);
+    }
+    campos.push(['Dias de uso no mês', a.dias+' dias '+chip(a.diasStatus)+'<br>Fonte: '+fonte(a.diasFonte)]);
+    campos.push(['Fator de funcionamento', a.fator==null ? 'Não se aplica '+chip(null) : (a.fator===1 ? '1 (sem redução) '+chip(a.fatorStatus) : C.fmtNum(a.fator)+' '+chip(a.fatorStatus)+'<br><span class="nota">'+esc(a.fatorNota)+'</span><br>Fonte: '+fonte(a.fatorFonte))]);
+    campos.push(['Fórmula usada', '<span class="mono">'+esc(d.formula)+'</span>']);
+    campos.push(['Consumo diário', C.fmtDecimal(d.kwhDia,3)+' kWh por dia de uso']);
+    campos.push(['Consumo mensal', C.fmtKwh2(C.paraCentesimos(d.kwhMes))+' kWh/mês (na tela: '+C.fmtKwh(d.decimos)+' kWh)']);
+    campos.push(['Custo mensal', reaisDeKwh(d.kwhMes)+' com a '+esc(cat.tarifa.nome.toLowerCase())]);
+    campos.push(['A fórmula simples representa bem?', esc(a.avaliacao)]);
+    return '<details><summary><span class="nome">'+esc(a.nome)+'</span><span class="val">'+C.fmtKwh(d.decimos)+' kWh/mês</span>'+chip(piorStatus(a))+'</summary><div class="ficha"><dl>'+
+      campos.map(function(c){ return '<dt>'+c[0]+'</dt><dd>'+c[1]+'</dd>'; }).join('')+'</dl></div></details>';
+  }).join('');
+
+  // 6. hipóteses e pendências (geradas a partir dos status)
+  var hip = [esc(cat.casa), esc(cat.tarifa.nome+': '+C.fmtReais(C.arredondar(tarifa*100))+'/kWh (valor didático).')];
+  cat.aparelhos.forEach(function(a){
+    if (a.usoStatus==='hipotese') hip.push(esc(a.nome+' — tempo de uso: '+a.usoNota));
+    if (a.fatorStatus==='hipotese') hip.push(esc(a.nome+' — fator de funcionamento '+C.fmtNum(a.fator)+': '+a.fatorNota));
+    if (a.potenciaStatus==='hipotese') hip.push(esc(a.nome+' — potência: '+a.potenciaNota));
+  });
+  $('lista-hipoteses').innerHTML = hip.map(function(h){ return '<li>'+h+'</li>'; }).join('');
+  $('lista-confirmar').innerHTML = cat.aparelhos.filter(function(a){ return piorStatus(a)!=='confirmado'; }).map(function(a){
+    var o = a.modelo==='consumoMensal' ? 'consumo mensal (kWh/mês) na etiqueta do Inmetro' : 'potência (W) e tensão (V) na etiqueta ou plaqueta';
+    return '<li>'+esc(a.nome)+': '+o+'.</li>';
+  }).join('');
+
+  // 9. placar
+  function placar() {
+    var p = W.placar.ler();
+    $('placar-txt').innerHTML = p.visitantes ? 'Hoje: <b>' + p.visitantes + '</b> ' + (p.visitantes === 1 ? 'pessoa abriu' : 'pessoas abriram') + ' a conta, somando <b>' + C.fmtReais(p.economiaAnualCentavos) + '</b> de economia anual simulada (média de ' + C.fmtReais(C.arredondar(p.economiaAnualCentavos / p.visitantes)) + ' por pessoa).' : 'Ninguém abriu a conta hoje ainda.';
+  }
+  placar();
+  $('zerar-placar').onclick = function () { if (confirm('Zerar o placar de hoje?')) { W.placar.zerar(); placar(); } };
+
+  // 7. fontes
+  $('lista-fontes').innerHTML = Object.keys(cat.fontes).map(function(k){
+    var f = cat.fontes[k]; return '<li><a href="'+f.url+'" target="_blank" rel="noopener">'+esc(f.nome)+'</a><br><span class="aviso">'+esc(f.tipo)+'</span></li>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

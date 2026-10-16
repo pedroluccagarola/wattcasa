@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sobre a WattCasa</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='19' fill='%23FFB020'/%3E%3Cpath d='M22 6 11 23h8l-2 11 12-18h-8z' fill='%230f2a3f'/%3E%3C/svg%3E">
+<style>
+/* Apresentação em slides 16:9 (1600×900), escalada para caber em qualquer tela. Offline, fontes do sistema. */
+:root{--noite:#070c16;--painel:#0d1830;--painel2:#13213d;--linha:#2a3d63;--texto:#F2F6FF;--texto2:#9FB0CC;--texto3:#6f83a6;--energia:#FFB020;--economia:#3DDC97;--vilao:#FF5A5F;--frio:#4CC9F0;--roxo:#a99bff}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;overscroll-behavior-x:none;background:var(--noite);color:var(--texto);font-family:system-ui,"Segoe UI",Roboto,Arial,sans-serif}
+#palco{position:fixed;left:50%;top:50%;width:1600px;height:900px;transform-origin:center;margin:-450px 0 0 -800px}
+.slide{position:absolute;inset:0;padding:80px 100px;display:flex;flex-direction:column;justify-content:center;opacity:0;pointer-events:none;transform:translateX(40px);transition:opacity .45s,transform .45s;
+  background:radial-gradient(ellipse 70% 60% at 75% 30%,#1a2a55 0%,#0b1430 50%,var(--noite) 85%)}
+.slide.on{opacity:1;pointer-events:auto;transform:none}
+.slide.antes{transform:translateX(-40px)}
+.rot{color:var(--energia);font-weight:800;letter-spacing:.16em;font-size:20px;text-transform:uppercase;margin:0 0 18px}
+h1{margin:0;font-size:120px;font-weight:900;letter-spacing:-.03em;line-height:1}h1 span,h2 span{color:var(--energia)}
+h2{margin:0 0 28px;font-size:64px;font-weight:900;letter-spacing:-.02em;line-height:1.08;max-width:1250px}
+p.grande{font-size:32px;line-height:1.4;color:var(--texto2);margin:0 0 18px;max-width:1150px}p.grande b{color:var(--texto)}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+img.foto{width:100%;border-radius:18px;box-shadow:0 30px 80px #000a;display:block}
+/* capa */
+.capa{display:grid;grid-template-columns:640px 1fr;gap:40px;align-items:center}
+.capa .sub{font-size:40px;font-weight:800;margin:28px 0 14px;line-height:1.2}
+.capa .sub2{font-size:26px;color:var(--texto2);margin:0}
+.capa .feira{margin-top:44px;display:inline-block;padding:10px 22px;border:2px solid var(--energia);border-radius:40px;color:var(--energia);font-weight:800;letter-spacing:.1em;font-size:20px}
+/* passos */
+.passos{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:10px}
+.passo{background:#0d1830cc;border:2px solid var(--linha);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.passo .n{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:#ffb02022;border:3px solid var(--energia);color:var(--energia);font-weight:900;font-size:26px}
+.passo b{font-size:30px}.passo span{font-size:22px;color:var(--texto2);line-height:1.35}
+.passo .img{height:250px;border-radius:14px;background:#000 center/cover no-repeat}
+/* equação */
+.eq{display:flex;align-items:center;gap:22px;margin:20px 0 40px;flex-wrap:nowrap}
+.eq .t{flex:1;text-align:center;padding:26px 14px;border-radius:22px;border:3px solid;min-width:0}
+.eq .t b{display:block;font-size:40px;font-weight:900}.eq .t span{font-size:20px;color:var(--texto2)}
+.eq .op{font-size:56px;font-weight:900;color:var(--texto3)}
+.t.pot{border-color:var(--frio)}.t.pot b{color:var(--frio)}
+.t.tmp{border-color:var(--roxo)}.t.tmp b{color:var(--roxo)}
+.t.ene{border-color:var(--energia);background:#ffb02014}.t.ene b{color:var(--energia)}
+.t.tar{border-color:var(--texto3)}
+.t.cus{border-color:var(--economia);background:#3ddc9714}.t.cus b{color:var(--economia)}
+.exemplo{font:600 28px ui-monospace,"Cascadia Mono",Consolas,monospace;background:#0d1830;border-left:6px solid var(--energia);padding:22px 28px;border-radius:12px;color:var(--texto)}
+.exemplo small{display:block;font:500 20px system-ui,sans-serif;color:var(--texto2);margin-bottom:8px}
+.nota{font-size:22px;color:var(--texto2);margin-top:26px;line-height:1.45}.nota b{color:var(--texto)}
+/* barras comparação */
+.comp{display:grid;grid-template-columns:1fr 1fr;gap:70px;margin-top:10px}
+.comp h3{margin:0 0 22px;font-size:26px;letter-spacing:.08em;color:var(--texto2)}
+.bar{display:grid;grid-template-columns:270px 1fr 170px;gap:18px;align-items:center;margin:20px 0;font-size:28px;font-weight:700}
+.bar .tr{height:46px;background:#ffffff10;border-radius:12px;overflow:hidden}
+.bar .tr u{display:block;height:100%;width:0;border-radius:12px;transition:width 1.2s .3s}
+.slide.on .bar .tr u{width:var(--w)}
+.bar .v{text-align:right;font-variant-numeric:tabular-nums}
+.pot .tr u{background:var(--frio)}.cons .tr u{background:var(--energia)}.cons .vil .tr u{background:var(--vilao)}
+.licao{margin-top:44px;font-size:38px;font-weight:900;line-height:1.25}.licao span{color:var(--energia)}
+/* listas */
+.lista{display:grid;grid-template-columns:1fr 1fr;gap:26px 50px;margin-top:6px}
+.item{display:flex;gap:20px;align-items:flex-start}
+.item i{flex:none;width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-style:normal;font-size:32px;background:#ffffff0d;border:2px solid var(--linha)}
+.item b{display:block;font-size:28px;margin-bottom:6px}.item span{font-size:21px;color:var(--texto2);line-height:1.4}
+.item span strong{color:var(--texto)}
+.selo{display:inline-block;padding:2px 10px;border-radius:20px;font-size:16px;font-weight:800;margin-right:6px}
+.selo.est{background:var(--energia);color:#1a1200}.selo.hip{background:var(--vilao);color:#2a0607}.selo.conf{background:var(--economia);color:#03271a}
+/* final */
+.final{text-align:center;align-items:center}
+.final h2{max-width:none}
+.botoes{display:flex;gap:28px;justify-content:center;margin-top:30px}
+.btn{border:0;border-radius:60px;background:var(--energia);color:#1a1200;font-weight:900;font-size:34px;padding:24px 56px;text-decoration:none;box-shadow:0 10px 40px #ffb02055}
+.btn.sec{background:none;border:3px solid var(--linha);color:var(--texto2);box-shadow:none;font-size:28px;font-weight:700}
+.equipe{margin-top:56px;color:var(--texto2);font-size:24px}.equipe b{color:var(--texto)}
+/* navegação */
+#nav{position:fixed;left:0;right:0;bottom:14px;display:flex;justify-content:center;align-items:center;gap:14px;z-index:5}
+#nav button{background:#0d1830cc;border:2px solid var(--linha);color:var(--texto2);border-radius:30px;padding:8px 18px;font-size:16px;cursor:pointer}
+#nav button:hover{color:var(--texto);border-color:var(--texto2)}
+#pontos{display:flex;gap:8px}#pontos i{width:10px;height:10px;border-radius:50%;background:#ffffff30;cursor:pointer}#pontos i.on{background:var(--energia);width:26px;border-radius:6px}
+#voltar-app{position:fixed;left:16px;top:14px;z-index:5;color:var(--texto3);font-size:15px;text-decoration:none;border-bottom:1px dashed var(--texto3)}
+#num{position:fixed;right:18px;top:14px;color:var(--texto3);font-size:15px;z-index:5}
+</style>
+</head>
+<body>
+<a id="voltar-app" href="index.html">← abrir a WattCasa</a>
+<div id="num"></div>
+<div id="palco">
+
+  <section class="slide capa">
+    <div>
+      <h1>Watt<span>Casa</span></h1>
+      <p class="sub">Mexa na casa, veja o que muda na conta.</p>
+      <p class="sub2">Uma casa interativa que ensina, na prática, para onde vai a energia de uma casa.</p>
+      <span class="feira">EXPOTEC 2026</span>
+    </div>
+    <img class="foto" src="assets/casa.jpg" alt="Casa da WattCasa em 3D, vista de cima">
+  </section>
+
+  <section class="slide">
+    <p class="rot">O problema</p>
+    <h2>A conta de luz chega todo mês.<br>Mas <span>o que pesa nela?</span></h2>
+    <p class="grande">Muita gente sabe que "o chuveiro gasta muito", mas não sabe <b>quanto</b> — nem que o <b>tempo de uso</b> pode pesar tanto quanto a potência do aparelho.</p>
+    <p class="grande">Sem enxergar o consumo, fica difícil entender a própria conta e mudar algum hábito.</p>
+  </section>
+
+  <section class="slide">
+    <p class="rot">A ideia</p>
+    <h2>Em vez de uma calculadora, <span>uma casa</span>.</h2>
+    <div class="passos">
+      <div class="passo"><span class="n">1</span><div class="img" style="background-image:url(assets/casa.jpg)"></div><b>Dê seu palpite</b><span>Qual aparelho pesa mais na conta? O visitante aposta antes de ver os números.</span></div>
+      <div class="passo"><span class="n">2</span><div class="img" style="background-image:url(assets/etiqueta.png);background-position:center top"></div><b>Mude o uso</b><span>Ligue, desligue e mude o tempo de uso. A casa e o medidor reagem na hora.</span></div>
+      <div class="passo"><span class="n">3</span><div class="img" style="background-image:url(assets/conta.jpg);background-position:center top"></div><b>Abra sua conta</b><span>Uma conta de luz simulada mostra o que mais pesou, o antes × depois e onde economizar.</span></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <p class="rot">Como funciona</p>
+    <h2>A conta toda cabe em uma ideia.</h2>
+    <div class="eq">
+      <div class="t pot"><b>Potência</b><span>W (watt)</span></div><span class="op">×</span>
+      <div class="t tmp"><b>Tempo</b><span>horas de uso</span></div><span class="op">=</span>
+      <div class="t ene"><b>Energia</b><span>kWh</span></div><span class="op">×</span>
+      <div class="t tar"><b>Tarifa</b><span>R$ por kWh</span></div><span class="op">=</span>
+      <div class="t cus"><b>Custo</b><span>R$</span></div>
+    </div>
+    <div class="exemplo"><small>Exemplo da casa (chuveiro), calculado pelo programa:</small><span id="ex-chuveiro"></span></div>
+    <p class="nota"><b>W</b> é o quanto o aparelho puxa enquanto está ligado. <b>kWh</b> é a energia acumulada no tempo — é o que o medidor registra e o que vem na conta. Geladeira e ar-condicionado ligam e desligam sozinhos, por isso recebem um tratamento especial (explicado na Central da Banca).</p>
+  </section>
+
+  <section class="slide">
+    <p class="rot">A descoberta</p>
+    <h2>Mais potência <span>não</span> é sempre mais consumo.</h2>
+    <div class="comp">
+      <div class="pot"><h3>POTÊNCIA</h3><div id="bar-pot"></div></div>
+      <div class="cons"><h3>CONSUMO NO MÊS</h3><div id="bar-cons"></div></div>
+    </div>
+    <p class="licao" id="licao"></p>
+  </section>
+
+  <section class="slide">
+    <div class="duas">
+      <div>
+        <p class="rot">O resultado</p>
+        <h2>Uma conta de luz <span>feita pelo visitante</span>.</h2>
+        <p class="grande" style="font-size:27px">A conta mostra o que mais pesou, a comparação com o palpite, os cômodos, o consumo que não para e dicas calculadas a partir das escolhas da pessoa.</p>
+        <div class="exemplo" style="font-size:24px"><small>Exemplo, calculado pelo programa:</small><span id="ex-economia"></span></div>
+      </div>
+      <img class="foto" src="assets/conta.jpg" alt="Conta de luz simulada da WattCasa">
+    </div>
+  </section>
+
+  <section class="slide">
+    <p class="rot">Como fizemos</p>
+    <h2>Números que dá para <span>explicar</span>.</h2>
+    <div class="lista">
+      <div class="item"><i>📋</i><div><b>Dados com origem</b><span id="tx-dados"></span></div></div>
+      <div class="item"><i>🧮</i><div><b>Cálculo testado</b><span id="tx-testes"></span></div></div>
+      <div class="item"><i>💻</i><div><b>Tecnologia</b><span>HTML, CSS e JavaScript, com a casa 3D em <strong>Three.js</strong>. Funciona <strong>offline</strong>, sem internet, login ou servidor.</span></div></div>
+      <div class="item"><i>🖥️</i><div><b>Feito para a feira</b><span>Testado em telas de computador, notebook e celular. Volta sozinho ao início quando ninguém está usando.</span></div></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <p class="rot">Honestidade</p>
+    <h2>É uma <span>simulação</span> — e dizemos isso.</h2>
+    <div class="lista">
+      <div class="item"><i>🏠</i><div><b>Casa fictícia</b><span>Uma casa de referência com 4 moradores. Não é a casa do visitante.</span></div></div>
+      <div class="item"><i>💲</i><div><b>Tarifa didática</b><span id="tx-tarifa"></span></div></div>
+      <div class="item"><i>📏</i><div><b>Aparelhos típicos</b><span>As potências vêm de tabelas de concessionárias, não de modelos específicos. Aparelhos reais variam.</span></div></div>
+      <div class="item"><i>🚫</i><div><b>O que fica de fora</b><span>Stand-by, bandeiras tarifárias, impostos, clima e aparelhos como máquina de lavar e ferro.</span></div></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <p class="rot">Próximos passos</p>
+    <h2>Para onde a WattCasa <span>pode crescer</span>.</h2>
+    <div class="lista">
+      <div class="item"><i>🔍</i><div><b>Etiquetas reais</b><span>Ler a potência de aparelhos das nossas casas e trocar "estimado" por "confirmado".</span></div></div>
+      <div class="item"><i>🏘️</i><div><b>Outras casas e famílias</b><span>Apartamento, casa com dois banheiros, família que trabalha em casa — rotinas diferentes, contas diferentes.</span></div></div>
+      <div class="item"><i>⭐</i><div><b>Comparar modelos</b><span>Trocar por aparelhos mais eficientes usando dados oficiais do PBE/Inmetro.</span></div></div>
+      <div class="item"><i>🕗</i><div><b>Horário de uso</b><span>Simular a Tarifa Branca, em que o preço do kWh muda conforme o horário.</span></div></div>
+    </div>
+  </section>
+
+  <section class="slide final">
+    <p class="rot">Experimente</p>
+    <h2>Você consegue descobrir<br>onde <span>essa conta</span> está pesando?</h2>
+    <div class="botoes"><a class="btn" href="index.html">ABRIR A WATTCASA</a><a class="btn sec" href="banca.html">Central da Banca</a></div>
+    <div class="equipe" id="equipe"></div>
+  </section>
+
+</div>
+<div id="nav"><button id="ant" aria-label="Slide anterior">← anterior</button><div id="pontos"></div><button id="prox" aria-label="Próximo slide">próximo →</button></div>
+
+<script src="js/catalogo.js"></script>
+<script src="js/calculo.js"></script>
+<script src="js/placar.js"></script>
+<script src="tests/testes.js"></script>
+<script>
+// ===== Para o grupo: escreva os nomes aqui (fica escondido se estiver vazio) =====
+var EQUIPE = ['Caio', 'Daniel', 'Felipe', 'João', 'Lucas', 'Luiz', 'Miguel', 'Pedro', 'Yasmin'];   // em ordem alfabética
+var ORIENTADOR = '';    // exemplo: 'Prof. Nome'
+
+(function () {
+  'use strict';
+  var W = window.WattCasa, cat = W.catalogo, C = W.calculo;
+  var ref = C.estadoReferencia(cat), R = C.resumo(cat, ref), porId = C.mapa(cat);
+  function $(id) { return document.getElementById(id); }
+  function d(id) { return R.itens.filter(function (x) { return x.id === id; })[0]; } // valor exibido, igual ao da casa e da conta
+  function curto(a) { return a.nome.split(' ')[0]; }
+  var TAR = C.fmtReais(C.arredondar(cat.tarifa.reaisPorKwh * 100));
+
+  // exemplo da fórmula
+  var chu = d('chu');
+  $('ex-chuveiro').textContent = chu.formula + ' × ' + TAR + ' = ' + C.fmtReais(C.custoCentavos(chu.decimos, cat.tarifa.reaisPorKwh));
+
+  // descoberta: aparelho de maior potência × aparelho que mais consome
+  var forte = cat.aparelhos.filter(function (a) { return a.potenciaW; }).sort(function (x, y) { return y.potenciaW - x.potenciaW; })[0];
+  var maior = porId[R.maiorAparelho], par = [forte, maior];
+  var maxP = Math.max(forte.potenciaW, maior.potenciaW), maxC = Math.max(d(forte.id).kwhMes, d(maior.id).kwhMes);
+  $('bar-pot').innerHTML = par.map(function (a) { return '<div class="bar"><span>' + curto(a).replace('-', '‑') + '</span><span class="tr"><u style="--w:' + (a.potenciaW / maxP * 100) + '%"></u></span><span class="v">' + C.fmtNum(a.potenciaW) + ' W</span></div>'; }).join('');
+  $('bar-cons').innerHTML = par.map(function (a) { var x = d(a.id); return '<div class="bar' + (a.id === maior.id ? ' vil' : '') + '"><span>' + curto(a).replace('-', '‑') + '</span><span class="tr"><u style="--w:' + (x.kwhMes / maxC * 100) + '%"></u></span><span class="v">' + C.fmtKwh(x.decimos) + ' kWh</span></div>'; }).join('');
+  var hf = d(forte.id).minutosDia, hm = d(maior.id).minutosDia;
+  $('licao').innerHTML = 'O ' + curto(forte).toLowerCase() + ' tem ' + C.fmtDecimal(forte.potenciaW / maior.potenciaW, 1) + ' vezes a potência, mas fica ligado ' + C.fmtNum(hf) + ' min por dia. O ' + curto(maior).toLowerCase() + ' fica <span>' + C.fmtNum(hm / 60) + ' horas</span>.<br>O que pesa na conta é <span>potência × tempo</span>.';
+
+  // exemplo de economia: banho 2 min mais curto e ar 1 h a menos
+  var eco = C.definirUso(cat, C.passo(cat, ref, 'ac', -1), 'chu', ref.uso.chu - 2);
+  var c = C.comparar(cat, R, C.resumo(cat, eco));
+  $('ex-economia').innerHTML = 'Banho de ' + ref.uso.chu + ' → ' + eco.uso.chu + ' min e ar ' + ref.uso.ac + ' → ' + eco.uso.ac + ' h/dia:<br>' +
+    C.fmtReais(R.custoCentavos) + ' → ' + C.fmtReais(R.custoCentavos - c.economiaCentavos) + ' por mês = <b style="color:#3DDC97">' + C.fmtReais(c.economiaAnualCentavos) + ' por ano</b>';
+
+  // dados e testes
+  var cont = { confirmado: 0, estimado: 0, hipotese: 0 }, fontes = {};
+  cat.aparelhos.forEach(function (a) {
+    ['potencia', 'uso', 'dias', 'fator', 'consumo'].forEach(function (k) { var s = a[k + 'Status']; if (s) cont[s]++; if (a[k + 'Fonte']) fontes[a[k + 'Fonte']] = 1; });
+  });
+  $('tx-dados').innerHTML = '<strong>' + cat.aparelhos.length + ' aparelhos</strong>, valores tirados de ' + Object.keys(fontes).length + ' fontes públicas (tabelas de concessionárias e da Eletrobras). Cada número tem selo: ' +
+    '<span class="selo conf">' + cont.confirmado + ' confirmados</span><span class="selo est">' + cont.estimado + ' estimados</span><span class="selo hip">' + cont.hipotese + ' hipóteses</span>';
+  var T = window.WattCasaTestes;
+  $('tx-testes').innerHTML = 'O cálculo é separado da casa 3D e conferido por testes automáticos: <strong>' + T.ok + ' de ' + T.total + ' testes passando</strong> agora, neste computador.';
+  $('tx-tarifa').textContent = cat.tarifa.nome + ' de ' + TAR + '/kWh, para facilitar a leitura. Ela pode ser trocada por uma tarifa real.';
+
+  var pl = W.placar && location.protocol === 'file:' ? W.placar.ler() : null; // placar só no computador da feira
+  if (pl && pl.visitantes) $('equipe').insertAdjacentHTML('beforebegin', '<p class="nota" style="text-align:center">Hoje, <b>' + pl.visitantes + (pl.visitantes === 1 ? ' pessoa testou' : ' pessoas testaram') + '</b> a WattCasa' + (pl.economiaAnualCentavos > 0 ? ' e ' + (pl.visitantes === 1 ? 'simulou' : 'simularam') + ' <b style="color:#3DDC97">' + C.fmtReais(pl.economiaAnualCentavos) + '</b> de economia por ano' : '') + '.</p>');
+  if (EQUIPE.length) $('equipe').innerHTML = 'Feito por <b>' + EQUIPE.join(', ') + '</b>' + (ORIENTADOR ? ' · orientação: <b>' + ORIENTADOR + '</b>' : '') + ' · EXPOTEC 2026';
+
+  // ===== navegação =====
+  var slides = [].slice.call(document.querySelectorAll('.slide')), atual = 0, pontos = $('pontos');
+  slides.forEach(function (s, i) { var p = document.createElement('i'); p.onclick = function () { ir(i); }; pontos.appendChild(p); });
+  function ir(i) {
+    atual = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach(function (s, k) { s.classList.toggle('on', k === atual); s.classList.toggle('antes', k < atual); });
+    [].forEach.call(pontos.children, function (p, k) { p.classList.toggle('on', k === atual); });
+    $('num').textContent = (atual + 1) + ' / ' + slides.length;
+    try { history.replaceState(null, '', '#' + (atual + 1)); } catch (e) {}
+  }
+  $('ant').onclick = function () { ir(atual - 1); }; $('prox').onclick = function () { ir(atual + 1); };
+  document.addEventListener('keydown', function (e) {
+    // Enter/Espaço num link ou botão fazem a ação dele (abrir a WattCasa, voltar slide), não "próximo slide"
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.closest && e.target.closest('a,button')) return;
+    if (['ArrowRight', 'PageDown', ' ', 'Enter'].indexOf(e.key) >= 0) { e.preventDefault(); ir(atual + 1); }
+    if (['ArrowLeft', 'PageUp', 'Backspace'].indexOf(e.key) >= 0) { e.preventDefault(); ir(atual - 1); }
+    if (e.key === 'Home') ir(0); if (e.key === 'End') ir(slides.length - 1);
+  });
+  var x0 = null;
+  var y0 = null;
+  addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  // deslizar na horizontal troca o slide; impede o navegador de usar o mesmo gesto para "voltar página"
+  addEventListener('touchmove', function (e) {
+    if (x0 === null || e.touches.length !== 1) return;
+    var dx = Math.abs(e.touches[0].clientX - x0), dy = Math.abs(e.touches[0].clientY - y0);
+    if (dx > dy && e.cancelable) e.preventDefault();
+  }, { passive: false });
+  addEventListener('touchend', function (e) { if (x0 === null) return; var dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) ir(atual + (dx < 0 ? 1 : -1)); x0 = null; });
+  function escalar() { var k = Math.min(innerWidth / 1600, (innerHeight - 50) / 900); $('palco').style.transform = 'scale(' + k + ')'; }
+  addEventListener('resize', escalar); escalar();
+  ir((parseInt(location.hash.slice(1), 10) || 1) - 1);
+})();
+</script>
+</body>
+</html>

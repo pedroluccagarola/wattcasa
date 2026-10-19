@@ -239,7 +239,7 @@ body.ocioso #ocioso{opacity:1;pointer-events:auto}
 
 /* ----- telas em pé (celular / tablet em retrato) ----- */
 @media (max-aspect-ratio:1/1){
-  #intro{padding:0 1.6rem 3rem;align-items:flex-end;background:linear-gradient(0deg,#070c16f5 0%,#070c16d9 42%,#070c1600 70%)}
+  #intro{padding:0 1.6rem calc(1.4rem + 44px + .6rem);align-items:flex-end;background:linear-gradient(0deg,#070c16f5 0%,#070c16d9 42%,#070c1600 70%)} /* embaixo: espaço dos links do rodapé (1,4rem do fundo + 44 px de toque), para o aviso não ficar por cima deles */
   .logo{font-size:4rem}.intro-1{font-size:1.4rem}.intro-2{font-size:1.75rem}
   #topo{left:1rem;top:1rem;flex-direction:column;gap:.5rem}.logo-p{display:none}
   #medidor{right:1rem;left:auto;top:1rem;width:auto;min-width:15rem;padding:.6rem .9rem}

@@ -287,8 +287,10 @@
   function quadro() {
     requestAnimationFrame(quadro);
     var hud = zoomAtivo ? retangulosHud() : null; // com zoom, rótulo que cairia sobre topo, medidor ou convite some
+    var med = !zoomAtivo && !retrato() ? $('medidor').getBoundingClientRect() : null; // sem zoom, rótulo que encostaria no medidor desliza para a esquerda
     rotulos.forEach(function (r) {
       var p = cena.posComodo(r[0]), meia = r[1].offsetWidth / 2 + 4, x = Math.max(meia, Math.min(innerWidth - meia, p.x)), mh = r[1].offsetHeight / 2;
+      if (med && x + meia > med.left && x - meia < med.right && p.y + mh > med.top && p.y - mh < med.bottom && med.left - meia - 4 >= meia) x = med.left - meia - 4;
       r[1].style.left = x + 'px'; r[1].style.top = p.y + 'px';
       var some = hud && hud.some(function (h) { return x + meia > h.left && x - meia < h.right && p.y + mh > h.top && p.y - mh < h.bottom; });
       r[1].style.opacity = some ? 0 : '';
